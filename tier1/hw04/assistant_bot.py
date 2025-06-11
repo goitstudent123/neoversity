@@ -1,19 +1,43 @@
+from typing import Any, Callable, TypeVar
+
+F = TypeVar("F", bound=Callable[..., Any])
+
+
+def input_error(error_hint: str = "Enter the argument for the command") -> Callable[[F], F]:
+    def decorator(func: F) -> F:
+        def inner(*args: Any, **kwargs: Any) -> Any:
+            try:
+                return func(*args, **kwargs)
+            except KeyError:
+                return "Contact not found."
+            except ValueError:
+                return error_hint
+            except IndexError:
+                return error_hint
+
+        return inner  # type: ignore
+
+    return decorator
+
+
 def parse_input(user_input: str) -> tuple[str, list[str]]:
     cmd, *args = user_input.strip().split()
     return cmd.lower(), args
 
 
+@input_error("Invalid command format. Usage: add <name> <phone number>")
 def add_contact(args: list[str], contacts: dict[str, str]) -> str:
     if len(args) != 2:
-        return "Invalid command format. Usage: add <name> <phone number>"
+        raise IndexError
     name, phone = args
     contacts[name] = phone
     return "Contact added."
 
 
+@input_error("Invalid command format. Usage: change <name> <phone number>")
 def change_contact(args: list[str], contacts: dict[str, str]) -> str:
     if len(args) != 2:
-        return "Invalid command format. Usage: change <name> <phone number>"
+        raise IndexError
     name, phone = args
     if name in contacts:
         contacts[name] = phone
@@ -21,11 +45,12 @@ def change_contact(args: list[str], contacts: dict[str, str]) -> str:
     return "Contact not found."
 
 
+@input_error("Invalid command format. Usage: phone <name>")
 def show_phone(args: list[str], contacts: dict[str, str]) -> str:
     if len(args) != 1:
-        return "Invalid command format. Usage: phone <name>"
+        raise IndexError
     name = args[0]
-    return contacts.get(name, "Contact not found.")
+    return contacts[name]
 
 
 def show_all(contacts: dict[str, str]) -> str:
