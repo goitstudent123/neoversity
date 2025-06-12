@@ -1,4 +1,10 @@
-from tier1.hw04.assistant_bot import add_contact, change_contact, parse_input, show_all, show_phone
+from tier1.assistant.assistant_bot import (
+    add_contact,
+    change_contact,
+    parse_input,
+    show_all,
+    show_phone,
+)
 
 
 def test_parse_input_basic() -> None:
