@@ -1,7 +1,10 @@
 from typing import Callable
 
 
-def caching_fibonacci(cache: dict[int, int] = {}) -> Callable[[int], int]:
+def caching_fibonacci(cache: dict[int, int] | None = None) -> Callable[[int], int]:
+    if cache is None:
+        cache = {}
+
     def fibonacci(n: int) -> int:
         if n in cache:
             return cache[n]
