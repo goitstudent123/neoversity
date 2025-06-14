@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 
 from tier1.assistant.models import AddressBook, Phone, Record
@@ -90,3 +92,31 @@ def test_delete_record_from_book() -> None:
 def test_delete_non_existing_record() -> None:
     book = AddressBook()
     assert book.delete("NonExistent") is False
+
+
+def test_get_upcoming_birthdays() -> None:
+    ab = AddressBook()
+
+    john = Record("John")
+    john.add_phone("1234567890")
+    john.add_birthday("15.06.2000")
+
+    jane = Record("Jane")
+    jane.add_phone("0987654321")
+    jane.add_birthday("18.06.1995")
+
+    alex = Record("Alex")
+    alex.add_phone("1112223333")
+    alex.add_birthday("30.06.1999")
+
+    ab.add_record(john)
+    ab.add_record(jane)
+    ab.add_record(alex)
+
+    today = date(2025, 6, 12)
+    upcoming = ab.get_upcoming_birthdays(today=today)
+
+    assert len(upcoming) == 2
+    assert {"name": "John", "congratulation_date": "16.06.2025"} in upcoming
+    assert {"name": "Jane", "congratulation_date": "18.06.2025"} in upcoming
+    assert all("Alex" not in entry["name"] for entry in upcoming)
