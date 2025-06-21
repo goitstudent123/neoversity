@@ -16,7 +16,12 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.13"
 dependencies = [
-    "colorama"
+    "colorama",
+    "pandas",
+    "matplotlib",
+    "lxml",
+    "html5lib",
+    "beautifulsoup4",
 ]
 
 [project.optional-dependencies]
