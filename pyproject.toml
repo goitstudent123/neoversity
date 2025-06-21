@@ -16,7 +16,8 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.13"
 dependencies = [
-    "colorama"
+    "colorama",
+    "numpy",
 ]
 
 [project.optional-dependencies]
