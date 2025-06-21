@@ -18,6 +18,7 @@ requires-python = ">=3.13"
 dependencies = [
     "colorama",
     "numpy",
+    "matplotlib",
 ]
 
 [project.optional-dependencies]
