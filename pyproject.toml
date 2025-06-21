@@ -19,6 +19,7 @@ dependencies = [
     "colorama",
     "numpy",
     "matplotlib",
+    "seaborn",
 ]
 
 [project.optional-dependencies]
